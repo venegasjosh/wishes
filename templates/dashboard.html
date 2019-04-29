@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'css/bootstrap.min.css/') }}">
+    <title>The Wishing App</title>
+</head>
+
+
+<nav class='navbar navbar-light bg-light'>
+    <h3>Welcome, {{session['first_name']}}!</h3>
+    <a href="/logout">Logout</a>
+    <a href="/wishes/new">Make a wish!</a>
+</nav>
+
+
+<body>
+    <caption>Your wish list:</caption>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Date Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        {% for wish in wishes %}
+        {% if wish['granted'] is none %}
+        <tbody>
+            <td>{{wish["title"]}}</td>
+            <td>{{wish["created_at"]}}</td>
+            <td>
+                <a href="/wishes/{{wish['id']}}/delete">Remove</a> |
+                <a href="/wishes/edit/{{wish['id']}}">Edit</a> |
+                <form action="/wishes/{{wish['id']}}/addtogranted" method="POST"><input type="submit" value="Granted!">
+                </form>
+            </td>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <caption>Granted wishes:</caption>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Wisher</th>
+                <th>Date added</th>
+                <th>Date added</th>
+                <th>Likes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        {% for wish in granted_wishes %}
+        <tbody>
+            <td>{{wish["title"]}}</td>
+            <td>{{wish["first_name"]}}</td>
+            <td>{{wish["created_at"]}}</td>
+            <td>{{wish["date_granted"]}}</td>
+            <td>2</td>
+            <td>Like</td>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>
